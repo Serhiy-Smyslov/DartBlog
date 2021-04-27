@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 # Create your models here.
@@ -9,6 +10,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('category', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['title']
@@ -43,10 +47,13 @@ class Post(models.Model):
                                  related_name='posts')  # Connect model Category to it.
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')  # Connect model Tag to it.
 
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'slug': self.slug})
+
     def __str__(self):
         return self.title
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
